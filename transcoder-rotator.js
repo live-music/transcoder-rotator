@@ -275,7 +275,7 @@ Vault.read('secret/env').then(vault => {
                 // Stop dead transcoders
                 const now = new Date().getTime();
                 activeTranscoders.forEach(transcoder => {
-                  if (now > transcoder.cleanup.getTime()) {
+                  if (transcoder.cleanup && now > transcoder.cleanup.getTime()) {
                     console.log('REMOVING DEAD TRANSCODER', transcoder.ip, transcoder.public);
                     request({
                       url: `http://${ transcoder.ip }:8080/stop`,
@@ -370,7 +370,7 @@ Vault.read('secret/env').then(vault => {
       });
 
       if (exists) {
-        exists.cleanup = new Date(new Date().getTime() + TIME_TIL_RESET);
+        if (exists.cleanup) exists.cleanup = new Date(new Date().getTime() + TIME_TIL_RESET);
         return res.json({ success: `TRANSCODER ${ pub } EXISTS, CLEANUP REFRESHED` });
       }
 
@@ -388,7 +388,7 @@ Vault.read('secret/env').then(vault => {
               ip: currentTranscoder.ip,
               public: pub,
               private: priv,
-              cleanup: new Date(new Date().getTime() + TIME_TIL_RESET)
+              cleanup: !data.instant ? new Date(new Date().getTime() + TIME_TIL_RESET) : undefined
           });
 
           if (data.env !== 'development') {
