@@ -113,7 +113,7 @@ Vault.read('secret/env').then(vault => {
       region: 'nyc1',
       size: 's-1vcpu-1gb',
       image: '49860612',
-      ssh_keys: ['20298220', '20398405'],
+      ssh_keys: ['20298220', '20398405', '25260964'],
       backups: 'false',
       ipv6: false,
       user_data: '#cloud-config\nruncmd:\n - /opt/transcoder-controls/liquidsoap /opt/transcoder-controls/transcoder.liq\n - /usr/bin/git -C /opt/transcoder-controls pull origin master\n - /root/.nvm/versions/node/v8.12.0/bin/forever start /opt/transcoder-controls/index.js',
