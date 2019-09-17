@@ -392,7 +392,7 @@ Vault.read('secret/env').then(vault => {
           });
 
           if (data.env !== 'development') {
-            notifyFirstSet(data.room._id, data.room.dj);
+            if (!data.room.profile) notifyFirstSet(data.room._id, data.room.dj);
             notifyLiveSet(data.room);
           }
           console.log(`TRANSCODER STARTED FOR ${ pub }`);
