@@ -133,8 +133,8 @@ Vault.read('secret/env').then(vault => {
 
   function deleteDroplet(droplet) {
     api.delete(`v2/droplets/${ droplet }`)
-    .then((res) => { console.log('DROPLET DELETED', droplet); })
-    .catch(err => {});
+    .then(() => { console.log('DROPLET DELETED', droplet); })
+    .catch(() => {});
   }
 
   // api.get('v2/load_balancers', (res) => console.log(res));
@@ -167,13 +167,12 @@ Vault.read('secret/env').then(vault => {
                         reject(err);
                       }
                     });
-                  }).catch(err => {})
+                  }).catch(() => {})
                 );
               }
             }
 
             Promise.all(serverPromises).then((values) => {
-              let deleting = false;
               if (values) {
                 const newHealthy = [];
                 const newUnhealthy = [];
@@ -222,7 +221,7 @@ Vault.read('secret/env').then(vault => {
                               json: {
                                 jwt: jwt.sign({}, SERVICE_KEY)
                               }
-                            }, (err, response, body) => {
+                            }, () => {
                               flushing = flushing.filter(droplet => droplet.droplet !== compare.droplet);
                               utilized = utilized.filter(droplet => droplet !== compare.droplet);
                               console.log('TRANSCODER RESTORED!', compare.droplet);
@@ -245,7 +244,6 @@ Vault.read('secret/env').then(vault => {
                   let newCurrent;
                   for (let i = 0; i < healthy.length; i++) {
                     const exists = _.find(flushing, droplet => droplet.droplet === healthy[i].droplet);
-                    console.log('EXISTS', exists);
                     if (!exists) {
                       newCurrent = healthy[i];
                     }
@@ -287,7 +285,7 @@ Vault.read('secret/env').then(vault => {
                           }
                         }, SERVICE_KEY)
                       }
-                    }, (err, response, body) => {
+                    }, () => {
                       activeTranscoders = activeTranscoders.filter(search => search.public !== transcoder.public);
                     });
                   }

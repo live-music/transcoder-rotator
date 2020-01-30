@@ -39,6 +39,7 @@ rules:
   no-loop-func: 0
   one-var: 0
   one-var-declaration-per-line: 0
+  prefer-destructuring: 0
   quote-props: 0
   template-curly-spacing: [2, "always"]
   # import rules
