@@ -477,7 +477,7 @@ Vault.read('secret/env').then(vault => {
 
   const options = {
     key:  fs.readFileSync(`${ ENV.CERT_LOCATION }/private/cue.dj.pem`, 'utf8'),
-    cert: fs.readFileSync(`${ ENV.CERT_LOCATION }/csr/cue.dj.csr`, 'utf8')
+    cert: fs.readFileSync(`${ ENV.CERT_LOCATION }/csr/cue.dj.crt`, 'utf8')
   };
   const server = https.createServer(options, app);
   server.listen(2222);
