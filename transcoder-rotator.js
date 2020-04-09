@@ -21,7 +21,7 @@ const logger = winston.createLogger({
   ]
 });
 
-console.add(new winston.transports.Console({
+logger.add(new winston.transports.Console({
   format: winston.format.simple()
 }));
 
