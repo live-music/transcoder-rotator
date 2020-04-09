@@ -21,7 +21,7 @@ const logger = winston.createLogger({
   ]
 });
 
-logger.add(new winston.transports.Console({
+console.add(new winston.transports.Console({
   format: winston.format.simple()
 }));
 
@@ -138,7 +138,7 @@ Vault.read('secret/env').then(vault => {
   }
 
   // api.get('v2/load_balancers', (res) => console.log(res));
-  logger.info(`INITIALIZING TRANSCODER ROTATOR WITH: ${ MINIMUM_DROPLETS } MINIMUM DROPLETS`);
+  console.info(`INITIALIZING TRANSCODER ROTATOR WITH: ${ MINIMUM_DROPLETS } MINIMUM DROPLETS`);
 
   // Load monitor
   setInterval(() => {
@@ -264,7 +264,7 @@ Vault.read('secret/env').then(vault => {
                   for (let i = 0; i < healthy.length; i++) {
                     const exists = _.find(utilized, droplet => droplet === healthy[i].droplet);
                     if (!exists && healthy[i].ip !== '162.243.166.194') {
-                      logger.log(`DELETING ${ healthy[i].droplet }`);
+                      console.log(`DELETING ${ healthy[i].droplet }`);
                       deleteDroplet(healthy[i].droplet);
                     }
                   }
@@ -274,7 +274,7 @@ Vault.read('secret/env').then(vault => {
                 const now = new Date().getTime();
                 activeTranscoders.forEach(transcoder => {
                   if (transcoder.cleanup && now > transcoder.cleanup.getTime()) {
-                    logger.log(`REMOVING DEAD TRANSCODER ${ transcoder.ip } ${ transcoder.public }`);
+                    console.log(`REMOVING DEAD TRANSCODER ${ transcoder.ip } ${ transcoder.public }`);
                     request({
                       url: `http://${ transcoder.ip }:8080/stop`,
                       method: 'POST',
@@ -299,7 +299,7 @@ Vault.read('secret/env').then(vault => {
                       jwt: jwt.sign({}, SERVICE_KEY)
                     }
                   }, () => {
-                    logger.log(`TRANSCODER RESTORED! ${ currentTranscoder.droplet }`);
+                    console.log(`TRANSCODER RESTORED! ${ currentTranscoder.droplet }`);
 
                     activeTranscoders.forEach(active => {
                       request({
@@ -312,9 +312,9 @@ Vault.read('secret/env').then(vault => {
                         }
                       }, (err, response, body) => {
                         if (body) {
-                          logger.log(`TRANSCODER STARTED FOR ${ active.public }`);
+                          console.log(`TRANSCODER STARTED FOR ${ active.public }`);
                         } else {
-                          logger.log(`ISSUE STARTING TRANSCODER ON ${ currentTranscoder.ip }`);
+                          console.log(`ISSUE STARTING TRANSCODER ON ${ currentTranscoder.ip }`);
                         }
                       });
                     });
@@ -330,7 +330,7 @@ Vault.read('secret/env').then(vault => {
           }
         }
       })
-      .catch(err => { logger.log(`GOT ERROR ${ err }`); });
+      .catch(err => { console.log(`GOT ERROR ${ err }`); });
   }, 10000);
 
 
@@ -424,11 +424,11 @@ Vault.read('secret/env').then(vault => {
             if (!data.room.profile) notifyFirstSet(data.room._id, data.room.dj);
             notifyLiveSet(data.room);
           }
-          logger.log(`TRANSCODER STARTED FOR ${ pub }`);
+          console.log(`TRANSCODER STARTED FOR ${ pub }`);
           return res.json({ success: `TRANSCODER STARTED FOR ${ pub }` });
         }
 
-        logger.log(`ISSUE STARTING TRANSCODER ON ${ currentTranscoder.ip }`);
+        console.log(`ISSUE STARTING TRANSCODER ON ${ currentTranscoder.ip }`);
         return res.status(409).json({ error: `ISSUE STARTING TRANSCODER ON ${ currentTranscoder.ip }` });
       });
     });
