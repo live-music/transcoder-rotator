@@ -47,7 +47,7 @@ Vault.read('secret/env').then(vault => {
 
   const MINIMUM_DROPLETS = 1;
   const TIME_TIL_RESET = 60000 * 60 * 3;
-  const HEALTH_MEM_THRESHOLD = 25;
+  const HEALTH_MEM_THRESHOLD = 100;
   const HEALTH_CPU_THRESHOLD = 80;
 
   let init = false;
